@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { AuthUser, getAuthUser, getAuthToken, clearAuth } from "@/utils/auth";
+import {  getAuthUser, getAuthToken, clearAuth } from "@/utils/auth";
+import { AuthUser } from "@shared/api";
 
 interface AuthContextType {
   user: AuthUser | null;
