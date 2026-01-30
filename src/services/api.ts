@@ -16,9 +16,6 @@ import {
   mockDemoUser,
 } from "./mockData";
 
-// API base URL for Next.js
-const API_BASE_URL = typeof window !== 'undefined' ? '' : 'http://localhost:8080';
-
 /**
  * Generate a unique ID
  */

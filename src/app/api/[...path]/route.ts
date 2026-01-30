@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
+import { API_BASE_URL } from '@/config/api';
 
 // This is a catch-all API route that proxies requests to the Express backend
 export async function GET(request: NextRequest) {
@@ -11,7 +10,7 @@ export async function GET(request: NextRequest) {
     // Build the backend URL - remove /api prefix
     const backendPath = pathname.replace('/api', '');
     const queryString = searchParams.toString();
-    const backendUrl = `${BACKEND_URL}${backendPath}${queryString ? `?${queryString}` : ''}`;
+    const backendUrl = `${API_BASE_URL}${backendPath}${queryString ? `?${queryString}` : ''}`;
 
     // Forward the request to the backend
     const response = await fetch(backendUrl, {
@@ -44,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     // Build the backend URL - remove /api prefix
     const backendPath = pathname.replace('/api', '');
-    const backendUrl = `${BACKEND_URL}${backendPath}`;
+    const backendUrl = `${API_BASE_URL}${backendPath}`;
 
     // Forward the request to the backend
     const response = await fetch(backendUrl, {
@@ -78,7 +77,7 @@ export async function PUT(request: NextRequest) {
 
     // Build the backend URL - remove /api prefix
     const backendPath = pathname.replace('/api', '');
-    const backendUrl = `${BACKEND_URL}${backendPath}`;
+    const backendUrl = `${API_BASE_URL}${backendPath}`;
 
     // Forward the request to the backend
     const response = await fetch(backendUrl, {
@@ -110,7 +109,7 @@ export async function DELETE(request: NextRequest) {
   try {
     // Build the backend URL - remove /api prefix
     const backendPath = pathname.replace('/api', '');
-    const backendUrl = `${BACKEND_URL}${backendPath}`;
+    const backendUrl = `${API_BASE_URL}${backendPath}`;
 
     // Forward the request to the backend
     const response = await fetch(backendUrl, {

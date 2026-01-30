@@ -148,24 +148,24 @@ spendwise/
 ## 🔌 API Endpoints
 
 ### Transactions
-- `GET /api/transactions` - List transactions (with optional filters: startDate, endDate, categoryId)
-- `POST /api/transactions` - Create new transaction
-- `PUT /api/transactions/:id` - Update transaction
-- `DELETE /api/transactions/:id` - Delete transaction
+- `GET /transactions` - List transactions (with optional filters: startDate, endDate, categoryId)
+- `POST /transactions` - Create new transaction
+- `PUT /transactions/:id` - Update transaction
+- `DELETE /transactions/:id` - Delete transaction
 
 ### Categories
-- `GET /api/categories` - List all categories
-- `GET /api/categories/type/:type` - List categories by type (income/expense)
-- `POST /api/categories` - Create new category
+- `GET /categories` - List all categories
+- `GET /categories/type/:type` - List categories by type (income/expense)
+- `POST /categories` - Create new category
 
 ### Wallets
-- `GET /api/wallets` - List all wallets
-- `POST /api/wallets` - Create new wallet
-- `PUT /api/wallets/:id` - Update wallet
-- `DELETE /api/wallets/:id` - Delete wallet
+- `GET /wallets` - List all wallets
+- `POST /wallets` - Create new wallet
+- `PUT /wallets/:id` - Update wallet
+- `DELETE /wallets/:id` - Delete wallet
 
 ### Summary
-- `GET /api/summary` - Get financial summary (current + monthly)
+- `GET /summary` - Get financial summary (current + monthly)
 
 ## 🎨 Theme System
 

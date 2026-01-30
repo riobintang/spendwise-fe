@@ -97,87 +97,87 @@ async function handleApiRequest(
     }
 
     // ====== AUTHENTICATION ENDPOINTS ======
-    if (url === "/api/login" && method === "POST") {
+    if (url === "/login" && method === "POST") {
       const response = await api.login(body.email, body.password);
       return new MockResponse(200, "OK", response);
     }
 
-    if (url === "/api/register" && method === "POST") {
+    if (url === "/register" && method === "POST") {
       const response = await api.register(body.email, body.password, body.name);
       return new MockResponse(200, "OK", response);
     }
 
     // ====== TRANSACTION ENDPOINTS ======
-    if (url === "/api/transactions" && method === "GET") {
+    if (url === "/transactions" && method === "GET") {
       const response = await api.getTransactions();
       return new MockResponse(200, "OK", response);
     }
 
-    if (url === "/api/transactions" && method === "POST") {
+    if (url === "/transactions" && method === "POST") {
       const response = await api.createTransaction(body);
       return new MockResponse(201, "Created", response);
     }
 
-    if (url.match(/^\/api\/transactions\/[^\/]+$/) && method === "PUT") {
+    if (url.match(/^\/transactions\/[^\/]+$/) && method === "PUT") {
       const id = url.split("/").pop()!;
       const response = await api.updateTransaction(id, body);
       return new MockResponse(200, "OK", response);
     }
 
-    if (url.match(/^\/api\/transactions\/[^\/]+$/) && method === "DELETE") {
+    if (url.match(/^\/transactions\/[^\/]+$/) && method === "DELETE") {
       const id = url.split("/").pop()!;
       await api.deleteTransaction(id);
       return new MockResponse(204, "No Content", {});
     }
 
     // ====== CATEGORY ENDPOINTS ======
-    if (url === "/api/categories" && method === "GET") {
+    if (url === "/categories" && method === "GET") {
       const response = await api.getCategories();
       return new MockResponse(200, "OK", response);
     }
 
-    if (url === "/api/categories" && method === "POST") {
+    if (url === "/categories" && method === "POST") {
       const response = await api.createCategory(body);
       return new MockResponse(201, "Created", response);
     }
 
-    if (url.match(/^\/api\/categories\/[^\/]+$/) && method === "PUT") {
+    if (url.match(/^\/categories\/[^\/]+$/) && method === "PUT") {
       const id = parseInt(url.split("/").pop()!);
       const response = await api.updateCategory(id, body);
       return new MockResponse(200, "OK", response);
     }
 
-    if (url.match(/^\/api\/categories\/[^\/]+$/) && method === "DELETE") {
+    if (url.match(/^\/categories\/[^\/]+$/) && method === "DELETE") {
       const id = parseInt(url.split("/").pop()!);
       await api.deleteCategory(id);
       return new MockResponse(204, "No Content", {});
     }
 
     // ====== WALLET ENDPOINTS ======
-    if (url === "/api/wallets" && method === "GET") {
+    if (url === "/wallets" && method === "GET") {
       const response = await api.getWallets();
       return new MockResponse(200, "OK", response);
     }
 
-    if (url === "/api/wallets" && method === "POST") {
+    if (url === "/wallets" && method === "POST") {
       const response = await api.createWallet(body);
       return new MockResponse(201, "Created", response);
     }
 
-    if (url.match(/^\/api\/wallets\/[^\/]+$/) && method === "PUT") {
+    if (url.match(/^\/wallets\/[^\/]+$/) && method === "PUT") {
       const id = parseInt(url.split("/").pop()!);
       const response = await api.updateWallet(id, body);
       return new MockResponse(200, "OK", response);
     }
 
-    if (url.match(/^\/api\/wallets\/[^\/]+$/) && method === "DELETE") {
+    if (url.match(/^\/wallets\/[^\/]+$/) && method === "DELETE") {
       const id = parseInt(url.split("/").pop()!);
       await api.deleteWallet(id);
       return new MockResponse(204, "No Content", {});
     }
 
     // ====== SUMMARY ENDPOINTS ======
-    if (url.startsWith("/api/summary")) {
+    if (url.startsWith("/summary")) {
       // Parse query parameters
       const urlObj = new URL(url, "http://localhost");
       const startDate = urlObj.searchParams.get("startDate") || undefined;
@@ -188,7 +188,7 @@ async function handleApiRequest(
     }
 
     // ====== EXPORT ENDPOINTS ======
-    if (url.startsWith("/api/export")) {
+    if (url.startsWith("/export")) {
       const urlObj = new URL(url, "http://localhost");
       const format = (urlObj.searchParams.get("format") ||
         "json") as "json" | "csv" | "excel";
@@ -208,7 +208,7 @@ async function handleApiRequest(
 }
 
 /**
- * Install the fetch interceptor (globally override fetch for /api/* calls)
+ * Install the fetch interceptor (globally override fetch for /* calls)
  */
 export function installFetchInterceptor() {
   const originalFetch = globalThis.fetch;
@@ -220,7 +220,7 @@ export function installFetchInterceptor() {
     const url = typeof input === "string" ? input : input.toString();
 
     // Route API calls to mock service
-    if (url.startsWith("/api/")) {
+    if (url.startsWith("/")) {
       return handleApiRequest(url, init);
     }
 

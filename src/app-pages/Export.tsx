@@ -17,8 +17,9 @@ import {
 } from "@/utils/export";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Download, AlertCircle } from "lucide-react";
+import { withAuth } from "@/components/withAuth";
 
-export default function Export() {
+function Export() {
   const { toast } = useToast();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -29,7 +30,7 @@ export default function Export() {
     useQuery<TransactionsResponse>({
       queryKey: ["transactions"],
       queryFn: async () => {
-        const res = await fetchWithAuth("/api/transactions");
+        const res = await fetchWithAuth("/transactions");
         if (!res.ok) throw new Error("Failed to fetch transactions");
         return res.json();
       },
@@ -39,7 +40,7 @@ export default function Export() {
   const { data: categoriesData } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("/categories");
       if (!res.ok) throw new Error("Failed to fetch categories");
       return res.json();
     },
@@ -49,7 +50,7 @@ export default function Export() {
   const { data: walletsData } = useQuery<Wallet[]>({
     queryKey: ["wallets"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/wallets");
+      const res = await fetchWithAuth("/wallets");
       if (!res.ok) throw new Error("Failed to fetch wallets");
       return res.json();
     },
@@ -354,3 +355,5 @@ export default function Export() {
     </Layout>
   );
 }
+
+export default withAuth(Export);

@@ -425,14 +425,14 @@ Content-Type: application/json
 
 **Get Transactions**
 ```bash
-curl -X GET "http://localhost:8080/api/transactions?categoryId=food" \
+curl -X GET "http://localhost:8080/transactions?categoryId=food" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>"
 ```
 
 **Create Transaction**
 ```bash
-curl -X POST "http://localhost:8080/api/transactions" \
+curl -X POST "http://localhost:8080/transactions" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{
@@ -449,7 +449,7 @@ curl -X POST "http://localhost:8080/api/transactions" \
 
 ```javascript
 // Get transactions
-const response = await fetch('/api/transactions?categoryId=food', {
+const response = await fetch('/transactions?categoryId=food', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -459,7 +459,7 @@ const response = await fetch('/api/transactions?categoryId=food', {
 const data = await response.json();
 
 // Create transaction
-const createResponse = await fetch('/api/transactions', {
+const createResponse = await fetch('/transactions', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -492,8 +492,8 @@ Currently no rate limiting is implemented. For production, add:
 
 API is currently at **v1** (implicit). Future versions will use:
 ```
-/api/v2/transactions
-/api/v2/categories
+/v2/transactions
+/v2/categories
 ```
 
 ---

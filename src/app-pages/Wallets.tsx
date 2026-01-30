@@ -25,10 +25,11 @@ import { Wallet } from "@shared/api";
 import { Plus, Edit2, Trash2, Wallet as WalletIcon } from "lucide-react";
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
 import { ResponseBody } from "@/utils/responseBody";
+import { withAuth } from "@/components/withAuth";
 
 type WalletType = "cash" | "bank" | "e_wallet";
 
-export default function Wallets() {
+function Wallets() {
   const queryClient = useQueryClient();
 
   // Form states
@@ -42,7 +43,7 @@ export default function Wallets() {
   const { data: walletsData } = useQuery<ResponseBody<Wallet[]>>({
     queryKey: ["wallets"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/wallets");
+      const res = await fetchWithAuth("/wallets");
       return res.json();
     },
   });
@@ -56,7 +57,7 @@ export default function Wallets() {
       type: WalletType;
       currency: string;
     }) => {
-      const res = await fetchWithAuth("/api/wallets", {
+      const res = await fetchWithAuth("/wallets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -79,7 +80,7 @@ export default function Wallets() {
       type: WalletType;
       currency: string;
     }) => {
-      const res = await fetchWithAuth(`/api/wallets/${data.id}`, {
+      const res = await fetchWithAuth(`/wallets/${data.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -101,7 +102,7 @@ export default function Wallets() {
   // Delete wallet mutation
   const { mutate: deleteWallet, isPending: isDeleting } = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetchWithAuth(`/api/wallets/${id}`, { method: "DELETE" });
+      const res = await fetchWithAuth(`/wallets/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete wallet");
     },
     onSuccess: () => {
@@ -328,3 +329,5 @@ export default function Wallets() {
     </Layout>
   );
 }
+
+export default withAuth(Wallets);

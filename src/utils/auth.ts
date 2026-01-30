@@ -3,6 +3,7 @@
  */
 
 import type { AuthResponse, AuthUser } from "@shared/api";
+import { API_ENDPOINTS, buildApiUrl } from "@/config/api";
 
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "auth_user";
@@ -56,7 +57,7 @@ export async function loginUser(
     throw new Error("Email and password are required");
   }
 
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch(buildApiUrl(API_ENDPOINTS.AUTH.LOGIN), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -69,11 +70,11 @@ export async function loginUser(
 
   const result = await response.json();
   const data = result?.data;
-  
+
   if (!data?.token || !data?.id || !data?.email) {
     throw new Error("Invalid login response");
   }
-  
+
   return {
     token: data.token,
     user: {
@@ -97,7 +98,7 @@ export async function registerUser(
     throw new Error("All fields are required");
   }
 
-  const response = await fetch("/api/auth/register", {
+  const response = await fetch(buildApiUrl(API_ENDPOINTS.AUTH.REGISTER), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password, name }),
@@ -110,11 +111,11 @@ export async function registerUser(
 
   const result = await response.json();
   const userData = result?.data;
-  
+
   if (!userData || !userData.id || !userData.email) {
     throw new Error("Invalid register response");
   }
-  
+
   return userData as AuthUser;
 }
 

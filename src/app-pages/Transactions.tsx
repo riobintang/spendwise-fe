@@ -22,8 +22,9 @@ import {
 import { Plus, X } from "lucide-react";
 import { ResponseBody } from "@/utils/responseBody";
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
+import { withAuth } from "@/components/withAuth";
 
-export default function Transactions() {
+function Transactions() {
   const queryClient = useQueryClient();
   const [formOpen, setFormOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] =
@@ -38,7 +39,7 @@ export default function Transactions() {
   const { data: categoriesData } = useQuery<ResponseBody<Category[]>>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("/categories");
       return res.json();
     },
   });
@@ -47,7 +48,7 @@ export default function Transactions() {
   const { data: walletsData } = useQuery<ResponseBody<Wallet[]>>({
     queryKey: ["wallets"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/wallets");
+      const res = await fetchWithAuth("/wallets");
       return res.json();
     },
   });
@@ -62,7 +63,7 @@ export default function Transactions() {
       if (categoryFilter) params.append("categoryId", categoryFilter);
       
       const queryString = params.toString();
-      const url = queryString ? `/api/transactions?${queryString}` : "/api/transactions";
+      const url = queryString ? `/transactions?${queryString}` : "/transactions";
       
       const res = await fetchWithAuth(url);
       return res.json();
@@ -74,8 +75,8 @@ export default function Transactions() {
     mutationFn: async (transaction: Partial<Transaction>) => {
       const method = editingTransaction?.id ? "PUT" : "POST";
       const url = editingTransaction?.id
-        ? `/api/transactions/${editingTransaction.id}`
-        : "/api/transactions";
+        ? `/transactions/${editingTransaction.id}`
+        : "/transactions";
 
       const res = await fetchWithAuth(url, {
         method,
@@ -97,7 +98,7 @@ export default function Transactions() {
   // Delete transaction
   const { mutate: deleteTransactionMutation } = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetchWithAuth(`/api/transactions/${id}`, { method: "DELETE" });
+      const res = await fetchWithAuth(`/transactions/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete transaction");
     },
     onSuccess: () => {
@@ -233,3 +234,5 @@ export default function Transactions() {
     </Layout>
   );
 }
+
+export default withAuth(Transactions);

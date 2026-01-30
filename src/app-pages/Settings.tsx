@@ -12,15 +12,16 @@ import {
 } from "@shared/api";
 import { exportToExcel, exportToJSON, exportToCSV } from "@/utils/export";
 import { Download, FileJson, FileText } from "lucide-react";
+import { withAuth } from "@/components/withAuth";
 
-export default function Settings() {
+function Settings() {
   const [isExporting, setIsExporting] = useState(false);
 
   // Fetch transactions
   const { data: transactionsData } = useQuery<TransactionsResponse>({
     queryKey: ["transactions"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/transactions");
+      const res = await fetchWithAuth("/transactions");
       return res.json();
     },
   });
@@ -29,7 +30,7 @@ export default function Settings() {
   const { data: categoriesData } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("/categories");
       return res.json();
     },
   });
@@ -38,7 +39,7 @@ export default function Settings() {
   const { data: walletsData } = useQuery<Wallet[]>({
     queryKey: ["wallets"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/wallets");
+      const res = await fetchWithAuth("/wallets");
       return res.json();
     },
   });
@@ -195,3 +196,5 @@ export default function Settings() {
     </Layout>
   );
 }
+
+export default withAuth(Settings);

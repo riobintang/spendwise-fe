@@ -26,8 +26,9 @@ import { Plus, Edit2, Trash2 } from "lucide-react";
 import { getDefaultCategoryColor } from "@/utils/colors";
 import { fetchWithAuth } from "@/utils/fetchWithAuth";
 import { ResponseBody } from "@/utils/responseBody";
+import { withAuth } from "@/components/withAuth";
 
-export default function Categories() {
+function Categories() {
   const queryClient = useQueryClient();
 
   // Form states
@@ -46,7 +47,7 @@ export default function Categories() {
     queryKey: ["categories"],
     queryFn: async () => {
       console.log("test categories")
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("/categories");
       return res.json();
     },
   });
@@ -60,7 +61,7 @@ export default function Categories() {
       color: string;
       type: TransactionType;
     }) => {
-      const res = await fetchWithAuth("/api/categories", {
+      const res = await fetchWithAuth("/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -83,7 +84,7 @@ export default function Categories() {
       color: string;
       type: TransactionType;
     }) => {
-      const res = await fetchWithAuth(`/api/categories/${data.id}`, {
+      const res = await fetchWithAuth(`/categories/${data.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -105,7 +106,7 @@ export default function Categories() {
   // Delete category mutation
   const { mutate: deleteCategory, isPending: isDeleting } = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetchWithAuth(`/api/categories/${id}`, { method: "DELETE" });
+      const res = await fetchWithAuth(`/categories/${id}`, { method: "DELETE" });
 
       if (!res.ok) throw new Error("Failed to delete category");
     },
@@ -400,3 +401,5 @@ export default function Categories() {
     </Layout>
   );
 }
+
+export default withAuth(Categories);

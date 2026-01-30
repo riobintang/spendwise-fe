@@ -27,8 +27,9 @@ import {
 } from "@/utils/formatters";
 import { Plus, TrendingUp, TrendingDown, Wallet as WalletIcon, X } from "lucide-react";
 import { ResponseBody } from "@/utils/responseBody";
+import { withAuth } from "@/components/withAuth";
 
-export default function Index() {
+function Index() {
   const queryClient = useQueryClient();
   const [formOpen, setFormOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] =
@@ -40,7 +41,7 @@ export default function Index() {
   const { data: categoriesData } = useQuery<ResponseBody<Category[]>>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("/categories");
       return res.json();
     },
   });
@@ -49,7 +50,7 @@ export default function Index() {
   const { data: walletsData } = useQuery<ResponseBody<Wallet[]>>({
     queryKey: ["wallets"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/wallets");
+      const res = await fetchWithAuth("/wallets");
       return res.json();
     },
   });
@@ -60,7 +61,7 @@ export default function Index() {
   >({
     queryKey: ["transactions"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/transactions");
+      const res = await fetchWithAuth("/transactions");
       return res.json();
     },
   });
@@ -75,7 +76,7 @@ export default function Index() {
       params.append("endDate", chartEndDate.trim());
     }
     const queryString = params.toString();
-    return queryString ? `/api/summary?${queryString}` : "/api/summary";
+    return queryString ? `/summary?${queryString}` : "/summary";
   };
 
   // Fetch summary with optional date filters
@@ -93,8 +94,8 @@ export default function Index() {
     mutationFn: async (transaction: Partial<Transaction>) => {
       const method = editingTransaction?.id ? "PUT" : "POST";
       const url = editingTransaction?.id
-        ? `/api/transactions/${editingTransaction.id}`
-        : "/api/transactions";
+        ? `/transactions/${editingTransaction.id}`
+        : "/transactions";
 
       const res = await fetchWithAuth(url, {
         method,
@@ -116,7 +117,7 @@ export default function Index() {
   // Delete transaction
   const { mutate: deleteTransaction } = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetchWithAuth(`/api/transactions/${id}`, { method: "DELETE" });
+      const res = await fetchWithAuth(`/transactions/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete transaction");
     },
     onSuccess: () => {
@@ -335,3 +336,5 @@ export default function Index() {
     </Layout>
   );
 }
+
+export default withAuth(Index);

@@ -20,6 +20,7 @@ import {
   Info,
   Zap,
 } from "lucide-react";
+import { withAuth } from "@/components/withAuth";
 
 const iconMap = {
   AlertCircle,
@@ -29,14 +30,14 @@ const iconMap = {
   Zap,
 };
 
-export default function Insights() {
+function Insights() {
   // Fetch transactions
   const { data: transactionsData, isLoading: isLoadingTransactions } = useQuery<
     TransactionsResponse
   >({
     queryKey: ["transactions"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/transactions");
+      const res = await fetchWithAuth("//transactions");
       return res.json();
     },
   });
@@ -45,7 +46,7 @@ export default function Insights() {
   const { data: categoriesData } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetchWithAuth("/api/categories");
+      const res = await fetchWithAuth("//categories");
       return res.json();
     },
   });
@@ -168,7 +169,7 @@ export default function Insights() {
                               insight.type.slice(1)}
                           </span>
                           {insight.severity && (
-                            <span className="inline-block px-2 py-1 bg-muted text-xs rounded capitalize">
+                            <span className="inline-block px-2 py-1 bg-muted text-xs rounded ctalize">
                               {insight.severity}
                             </span>
                           )}
@@ -190,3 +191,5 @@ export default function Insights() {
     </Layout>
   );
 }
+
+export default withAuth(Insights);
