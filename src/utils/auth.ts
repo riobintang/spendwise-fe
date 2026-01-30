@@ -2,16 +2,7 @@
  * Authentication utilities for JWT-based auth
  */
 
-export interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: AuthUser;
-}
+import type { AuthResponse, AuthUser } from "@shared/api";
 
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "auth_user";
@@ -65,7 +56,7 @@ export async function loginUser(
     throw new Error("Email and password are required");
   }
 
-  const response = await fetch("http://localhost:8080/users/login", {
+  const response = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -77,25 +68,36 @@ export async function loginUser(
   }
 
   const result = await response.json();
+  const data = result?.data;
+  
+  if (!data?.token || !data?.id || !data?.email) {
+    throw new Error("Invalid login response");
+  }
+  
   return {
-    token: result.data.token,
-    user: result.data,
+    token: data.token,
+    user: {
+      id: data.id,
+      email: data.email,
+      name: data.name,
+    },
   };
 }
 
 /**
  * Register user by calling backend API
+ * Note: Registration does not auto-login. User must login after registration.
  */
 export async function registerUser(
   email: string,
   password: string,
   name: string
-): Promise<AuthResponse> {
+): Promise<AuthUser> {
   if (!email || !password || !name) {
     throw new Error("All fields are required");
   }
 
-  const response = await fetch("http://localhost:8080/users/register", {
+  const response = await fetch("/api/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password, name }),
@@ -107,10 +109,13 @@ export async function registerUser(
   }
 
   const result = await response.json();
-  return {
-    token: result.data.token,
-    user: result.data,
-  };
+  const userData = result?.data;
+  
+  if (!userData || !userData.id || !userData.email) {
+    throw new Error("Invalid register response");
+  }
+  
+  return userData as AuthUser;
 }
 
 /**

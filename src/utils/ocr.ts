@@ -134,8 +134,8 @@ export function ocrResultToTransaction(
   categoryId: string
 ): Partial<Transaction> {
   return {
-    walletId,
-    categoryId,
+    walletId: parseInt(walletId),
+    categoryId: parseInt(categoryId),
     type: TransactionType.EXPENSE,
     amount: ocrResult.amount || 0,
     description: ocrResult.merchant || "Receipt from image",

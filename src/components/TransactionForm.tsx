@@ -41,8 +41,8 @@ export default function TransactionForm({
   initialData,
 }: TransactionFormProps) {
   const [type, setType] = useState<TransactionType>(defaultType);
-  const [walletId, setWalletId] = useState(initialData?.walletId);
-  const [categoryId, setCategoryId] = useState(initialData?.categoryId);
+  const [walletId, setWalletId] = useState(initialData?.walletId?.toString());
+  const [categoryId, setCategoryId] = useState(initialData?.categoryId?.toString());
   const [amount, setAmount] = useState(initialData?.amount?.toString());
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -58,10 +58,10 @@ export default function TransactionForm({
       setType(initialData.type);
     }
     if (initialData?.walletId) {
-      setWalletId(initialData.walletId);
+      setWalletId(initialData.walletId.toString());
     }
     if (initialData?.categoryId) {
-      setCategoryId(initialData.categoryId);
+      setCategoryId(initialData.categoryId.toString());
     }
     if (initialData?.amount) {
       setAmount(initialData.amount.toString());
@@ -87,8 +87,8 @@ export default function TransactionForm({
     setIsLoading(true);
     try {
       await onSubmit({
-        walletId,
-        categoryId,
+        walletId: parseInt(walletId),
+        categoryId: parseInt(categoryId),
         type,
         amount: parseFloat(amount),
         description,

@@ -77,17 +77,10 @@ export default function Transactions() {
         ? `/api/transactions/${editingTransaction.id}`
         : "/api/transactions";
 
-        const finalPayload: Partial<Transaction> = {
-          id: transaction.id ? Number(transaction.id) : undefined,
-          walletId: transaction.walletId ? parseInt(transaction.walletId.toString()): undefined,
-          categoryId: Number(transaction.categoryId),
-          ...transaction
-        }
-
       const res = await fetchWithAuth(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(finalPayload),
+        body: JSON.stringify(transaction),
       });
 
       if (!res.ok) throw new Error("Failed to save transaction");

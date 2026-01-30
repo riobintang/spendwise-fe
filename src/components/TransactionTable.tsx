@@ -28,11 +28,11 @@ export default function TransactionTable({
   onDelete,
   isLoading = false,
 }: TransactionTableProps) {
-  const getCategoryName = (id: string) => {
+  const getCategoryName = (id: number) => {
     return categories.find((c) => c.id === id)?.name || "Unknown";
   };
 
-  const getWalletName = (id: string) => {
+  const getWalletName = (id: number) => {
     return wallets.find((w) => w.id === id)?.name || "Unknown";
   };
 

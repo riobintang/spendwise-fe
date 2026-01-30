@@ -2,7 +2,7 @@ import { Transaction, Category, Wallet, TransactionType } from "@shared/api";
 
 // Mock demo user
 export const mockDemoUser = {
-  id: "demo-user",
+  id: 1,
   email: "demo@example.com",
   name: "Demo User",
 };
@@ -22,8 +22,8 @@ function generateMockTransactions(): Transaction[] {
     if (Math.random() > 0.7) {
       transactions.push({
         id: `tx-${id++}`,
-        walletId: "wallet-1",
-        categoryId: "income-salary",
+        walletId: 1,
+        categoryId: 1,
         type: TransactionType.INCOME,
         amount: 5000 + Math.random() * 2000,
         description: "Monthly salary",
@@ -33,17 +33,17 @@ function generateMockTransactions(): Transaction[] {
     } else {
       // Expense transactions
       const expenseCategories = [
-        { id: "food", amount: 45 + Math.random() * 55, desc: "Restaurant" },
-        { id: "transport", amount: 10 + Math.random() * 30, desc: "Uber/Taxi" },
-        { id: "shopping", amount: 50 + Math.random() * 150, desc: "Clothes shopping" },
-        { id: "utilities", amount: 80 + Math.random() * 60, desc: "Utilities" },
-        { id: "entertainment", amount: 20 + Math.random() * 80, desc: "Movie/Games" },
+        { id: 3, amount: 45 + Math.random() * 55, desc: "Restaurant" },
+        { id: 4, amount: 10 + Math.random() * 30, desc: "Uber/Taxi" },
+        { id: 5, amount: 50 + Math.random() * 150, desc: "Clothes shopping" },
+        { id: 6, amount: 80 + Math.random() * 60, desc: "Utilities" },
+        { id: 7, amount: 20 + Math.random() * 80, desc: "Movie/Games" },
       ];
 
       const expense = expenseCategories[Math.floor(Math.random() * expenseCategories.length)];
       transactions.push({
         id: `tx-${id++}`,
-        walletId: "wallet-1",
+        walletId: 1,
         categoryId: expense.id,
         type: TransactionType.EXPENSE,
         amount: Math.round(expense.amount * 100) / 100,
@@ -60,49 +60,49 @@ function generateMockTransactions(): Transaction[] {
 // Mock categories
 export const mockCategories: Category[] = [
   {
-    id: "income-salary",
+    id: 1,
     name: "Salary",
     icon: "banknote",
     color: "#10b981",
     type: TransactionType.INCOME,
   },
   {
-    id: "income-bonus",
+    id: 2,
     name: "Bonus",
     icon: "gift",
     color: "#10b981",
     type: TransactionType.INCOME,
   },
   {
-    id: "food",
+    id: 3,
     name: "Food & Dining",
     icon: "utensils",
     color: "#f97316",
     type: TransactionType.EXPENSE,
   },
   {
-    id: "transport",
+    id: 4,
     name: "Transport",
     icon: "car",
     color: "#3b82f6",
     type: TransactionType.EXPENSE,
   },
   {
-    id: "shopping",
+    id: 5,
     name: "Shopping",
     icon: "shopping-bag",
     color: "#ec4899",
     type: TransactionType.EXPENSE,
   },
   {
-    id: "utilities",
+    id: 6,
     name: "Utilities",
     icon: "zap",
     color: "#eab308",
     type: TransactionType.EXPENSE,
   },
   {
-    id: "entertainment",
+    id: 7,
     name: "Entertainment",
     icon: "popcorn",
     color: "#a855f7",
@@ -113,14 +113,14 @@ export const mockCategories: Category[] = [
 // Mock wallets
 export const mockWallets: Wallet[] = [
   {
-    id: "wallet-1",
+    id: 1,
     name: "Main Account",
     type: "bank",
     balance: 5000,
     currency: "USD",
   },
   {
-    id: "wallet-2",
+    id: 2,
     name: "Cash",
     type: "cash",
     balance: 500,

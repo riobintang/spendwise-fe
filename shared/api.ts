@@ -16,6 +16,11 @@ export interface AuthResponse {
   user: AuthUser;
 }
 
+export interface RegisterResponse {
+  user: AuthUser;
+  message: string;
+}
+
 // Transaction Types
 export enum TransactionType {
   INCOME = "income",
@@ -40,8 +45,8 @@ export interface Wallet {
 
 export interface Transaction {
   id: string;
-  walletId: string;
-  categoryId: string;
+  walletId: number;
+  categoryId: number;
   type: TransactionType;
   amount: number;
   description: string;

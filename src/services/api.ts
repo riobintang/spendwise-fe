@@ -167,7 +167,7 @@ export async function register(
   return {
     token: `token-${generateId()}`,
     user: {
-      id: generateId(),
+      id: Math.floor(Math.random() * 100000),
       email,
       name,
     },
@@ -181,7 +181,7 @@ export async function register(
 export async function getTransactions(
   startDate?: string,
   endDate?: string,
-  categoryId?: string
+  categoryId?: string | number
 ): Promise<TransactionsResponse> {
   await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -195,7 +195,8 @@ export async function getTransactions(
     filtered = filtered.filter((t) => t.date <= endDate);
   }
   if (categoryId) {
-    filtered = filtered.filter((t) => t.categoryId === categoryId);
+    const catIdNum = typeof categoryId === 'string' ? parseInt(categoryId) : categoryId;
+    filtered = filtered.filter((t) => t.categoryId === catIdNum);
   }
 
   const summary = calculateSummary(filtered);
@@ -261,7 +262,7 @@ export async function createCategory(
 
   const category: Category = {
     ...data,
-    id: generateId(),
+    id: Math.floor(Math.random() * 100000),
   };
 
   runtimeCategories.push(category);
@@ -269,7 +270,7 @@ export async function createCategory(
 }
 
 export async function updateCategory(
-  id: string,
+  id: number,
   data: Partial<Omit<Category, "id">>
 ): Promise<Category> {
   await new Promise((resolve) => setTimeout(resolve, 150));
@@ -283,7 +284,7 @@ export async function updateCategory(
   return updated;
 }
 
-export async function deleteCategory(id: string): Promise<void> {
+export async function deleteCategory(id: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 150));
 
   const index = runtimeCategories.findIndex((c) => c.id === id);
@@ -308,7 +309,7 @@ export async function createWallet(
 
   const wallet: Wallet = {
     ...data,
-    id: generateId(),
+    id: Math.floor(Math.random() * 100000),
   };
 
   runtimeWallets.push(wallet);
@@ -316,7 +317,7 @@ export async function createWallet(
 }
 
 export async function updateWallet(
-  id: string,
+  id: number,
   data: Partial<Omit<Wallet, "id">>
 ): Promise<Wallet> {
   await new Promise((resolve) => setTimeout(resolve, 150));
@@ -330,7 +331,7 @@ export async function updateWallet(
   return updated;
 }
 
-export async function deleteWallet(id: string): Promise<void> {
+export async function deleteWallet(id: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 150));
 
   const index = runtimeWallets.findIndex((w) => w.id === id);

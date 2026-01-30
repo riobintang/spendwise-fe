@@ -142,13 +142,13 @@ async function handleApiRequest(
     }
 
     if (url.match(/^\/api\/categories\/[^\/]+$/) && method === "PUT") {
-      const id = url.split("/").pop()!;
+      const id = parseInt(url.split("/").pop()!);
       const response = await api.updateCategory(id, body);
       return new MockResponse(200, "OK", response);
     }
 
     if (url.match(/^\/api\/categories\/[^\/]+$/) && method === "DELETE") {
-      const id = url.split("/").pop()!;
+      const id = parseInt(url.split("/").pop()!);
       await api.deleteCategory(id);
       return new MockResponse(204, "No Content", {});
     }
@@ -165,13 +165,13 @@ async function handleApiRequest(
     }
 
     if (url.match(/^\/api\/wallets\/[^\/]+$/) && method === "PUT") {
-      const id = url.split("/").pop()!;
+      const id = parseInt(url.split("/").pop()!);
       const response = await api.updateWallet(id, body);
       return new MockResponse(200, "OK", response);
     }
 
     if (url.match(/^\/api\/wallets\/[^\/]+$/) && method === "DELETE") {
-      const id = url.split("/").pop()!;
+      const id = parseInt(url.split("/").pop()!);
       await api.deleteWallet(id);
       return new MockResponse(204, "No Content", {});
     }

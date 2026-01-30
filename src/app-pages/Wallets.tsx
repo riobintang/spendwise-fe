@@ -35,8 +35,8 @@ export default function Wallets() {
   const [walletName, setWalletName] = useState("");
   const [walletType, setWalletType] = useState<WalletType>("cash");
   const [walletCurrency, setWalletCurrency] = useState("IDR");
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
 
   // Fetch wallets
   const { data: walletsData } = useQuery<ResponseBody<Wallet[]>>({
@@ -74,7 +74,7 @@ export default function Wallets() {
   // Update wallet mutation
   const { mutate: updateWalletMutation, isPending: isUpdating } = useMutation({
     mutationFn: async (data: {
-      id: string;
+      id: number;
       name: string;
       type: WalletType;
       currency: string;
@@ -100,7 +100,7 @@ export default function Wallets() {
 
   // Delete wallet mutation
   const { mutate: deleteWallet, isPending: isDeleting } = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       const res = await fetchWithAuth(`/api/wallets/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete wallet");
     },
@@ -149,7 +149,7 @@ export default function Wallets() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     deleteWallet(id);
   };
 

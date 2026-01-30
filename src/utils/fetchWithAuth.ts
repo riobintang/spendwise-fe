@@ -1,6 +1,6 @@
 import { getAuthToken } from "./auth";
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 /**
  * Fetch with automatic authorization header to backend Express
@@ -20,8 +20,10 @@ export async function fetchWithAuth(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // Convert relative URL to absolute backend URL
-  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.replace('/api', '')}`;
+  // Use Next.js API proxy by default
+  const fullUrl = url.startsWith("http")
+    ? url
+    : `${API_BASE_URL}${url.startsWith("/") ? url : `/${url}`}`;
 
   return fetch(fullUrl, {
     ...options,

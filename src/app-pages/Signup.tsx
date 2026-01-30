@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, AlertCircle } from "lucide-react";
-import { registerUser, setAuth } from "@/utils/auth";
-import { useAuth } from "@/context/AuthContext";
+import { registerUser } from "@/utils/auth";
 import {
   Form,
   FormControl,
@@ -21,35 +20,32 @@ import {
 } from "@/components/ui/form";
 
 // Zod validation schema
-const signupSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be less than 50 characters")
-    .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .max(100, "Password must be less than 100 characters")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-    ),
-  confirmPassword: z.string().min(1, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signupSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, "Name must be at least 2 characters")
+      .max(50, "Name must be less than 50 characters")
+      .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Please enter a valid email address"),
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .max(100, "Password must be less than 100 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function Signup() {
   const router = useRouter();
-  const { refreshAuth } = useAuth();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -67,7 +63,8 @@ export default function Signup() {
       // Redirect to login page after successful registration
       router.push("/login");
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Registration failed";
+      const errorMessage =
+        err instanceof Error ? err.message : "Registration failed";
       form.setError("root", {
         type: "manual",
         message: errorMessage,
@@ -178,7 +175,9 @@ export default function Signup() {
                 className="w-full"
                 disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? "Creating account..." : "Sign Up"}
+                {form.formState.isSubmitting
+                  ? "Creating account..."
+                  : "Sign Up"}
               </Button>
             </form>
           </Form>
@@ -186,7 +185,10 @@ export default function Signup() {
           <div className="mt-4 text-center text-sm">
             <p className="text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary font-semibold hover:underline">
+              <Link
+                href="/login"
+                className="text-primary font-semibold hover:underline"
+              >
                 Sign in
               </Link>
             </p>

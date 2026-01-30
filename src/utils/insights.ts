@@ -94,7 +94,8 @@ function analyzeSpendingPatterns(
       const percentChange = ((current - previous) / previous) * 100;
 
       if (percentChange > 30) {
-        const category = categories.find((c) => c.id === categoryId);
+        const catIdNum = parseInt(categoryId);
+        const category = categories.find((c) => c.id === catIdNum);
         insights.push({
           type: "alert",
           severity: "high",
@@ -102,7 +103,8 @@ function analyzeSpendingPatterns(
           metric: percentChange,
         });
       } else if (percentChange < -20) {
-        const category = categories.find((c) => c.id === categoryId);
+        const catIdNum = parseInt(categoryId);
+        const category = categories.find((c) => c.id === catIdNum);
         insights.push({
           type: "suggestion",
           severity: "low",
@@ -148,9 +150,10 @@ function checkBudgetAlerts(
   Object.entries(budgetLimits).forEach(([categoryId, limit]) => {
     const spent = currentMonthSpending[categoryId] || 0;
     const percentage = (spent / limit) * 100;
+    const catIdNum = parseInt(categoryId);
 
     if (percentage >= 90) {
-      const category = categories.find((c) => c.id === categoryId);
+      const category = categories.find((c) => c.id === catIdNum);
       alerts.push({
         type: "alert",
         severity: "high",
@@ -158,7 +161,7 @@ function checkBudgetAlerts(
         metric: percentage,
       });
     } else if (percentage >= 75) {
-      const category = categories.find((c) => c.id === categoryId);
+      const category = categories.find((c) => c.id === catIdNum);
       alerts.push({
         type: "alert",
         severity: "medium",
@@ -203,7 +206,8 @@ function generateSuggestions(
   )[0];
 
   if (topCategory) {
-    const category = categories.find((c) => c.id === topCategory[0]);
+    const catIdNum = parseInt(topCategory[0]);
+    const category = categories.find((c) => c.id === catIdNum);
     const percentage = (topCategory[1] / totalExpense) * 100;
 
     if (percentage > 40) {

@@ -1,6 +1,10 @@
 'use client';
 
-import LoginPage from '@/pages/Login';
+import dynamicImport from 'next/dynamic';
+
+const LoginPage = dynamicImport(() => import('@/app-pages/Login'), {
+  ssr: false,
+});
 
 export default function Login() {
   return <LoginPage />;

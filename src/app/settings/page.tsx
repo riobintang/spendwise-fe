@@ -1,30 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
-import SettingsPage from '@/pages/Settings';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const SettingsPage = dynamic(() => import('@/app-pages/Settings'), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function Settings() {
-  const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, isLoading, router]);
+    setMounted(true);
+  }, []);
 
-  if (isLoading) {
+  if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   return <SettingsPage />;
